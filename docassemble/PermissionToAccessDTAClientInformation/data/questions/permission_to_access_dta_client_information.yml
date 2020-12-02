@@ -90,7 +90,7 @@ subquestion: |
   Please put your last four digits of SS# or agency ID number. Put N/A for whichever you do not use.
 fields:
   - 'Last Four of Social Security Number': social_security_number
-    maxlength: 9
+    maxlength: 4
   - 'Agency number': agency_number
     maxlength: 17
 ---
