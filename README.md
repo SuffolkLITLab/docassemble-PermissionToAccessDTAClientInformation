@@ -15,3 +15,5 @@ https://github.com/SuffolkLITLab/docassemble-PermissionToAccessDTAClientInformat
 Final source code
 https://github.com/SuffolkLITLab/docassemble-PermissionToAccessDTAClientInformation/blob/main/docassemble/PermissionToAccessDTAClientInformation/data/permission_to_access_dta_client_information.yml 
 
+Final template
+https://github.com/SuffolkLITLab/docassemble-PermissionToAccessDTAClientInformation/blob/main/docassemble/PermissionToAccessDTAClientInformation/data/permission_access_dta_info.pdf
