@@ -2,3 +2,10 @@
 A docassemble extension.
 Trevor Mears tmears@su.suffolk.edu
 A document assembly line extension
+
+Link to Google Doc with original project
+https://docs.google.com/document/d/1CMqkDeuvgwoEvYmw6fa__6tIZREABxObvbsBS09olpQ/edit?usp=sharing
+
+Link to original DTA form
+https://www.masslegalservices.org/system/files/library/DTA%20Authorization-%20Consent%20form%20Jan%202016%20English.pdf
+
