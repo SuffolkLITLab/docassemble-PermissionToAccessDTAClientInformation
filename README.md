@@ -12,3 +12,6 @@ https://www.masslegalservices.org/system/files/library/DTA%20Authorization-%20Co
 Issue page on Github
 https://github.com/SuffolkLITLab/docassemble-PermissionToAccessDTAClientInformation/issues
 
+Final source code
+https://github.com/SuffolkLITLab/docassemble-PermissionToAccessDTAClientInformation/blob/main/docassemble/PermissionToAccessDTAClientInformation/data/permission_to_access_dta_client_information.yml 
+
