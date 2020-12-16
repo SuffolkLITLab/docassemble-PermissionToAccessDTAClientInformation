@@ -1,0 +1,186 @@
+include:
+  - docassemble.MAVirtualCourt:basic-questions.yml
+---
+comment: |
+  The metadata section controls the tab title and saved interview title. You can delete this section if you include this YAML file in another YAML file.
+metadata:
+  title: |
+    Permission to Access DTA Client Case Information
+  short title: |
+    Permission access DTA info
+---
+comment: |
+  This section is used by MAVirtualCourts to control how some of the questions work.
+mandatory: True
+code: |
+  interview_metadata # make sure we initialize the object
+  if not defined("interview_metadata['permission_access_dta_info_']"):
+    interview_metadata.initializeObject('permission_access_dta_info_')
+  interview_metadata['permission_access_dta_info_'].update({
+    'title': 'Permission to Access DTA Client Case Information',
+    'short title': 'Permission access DTA info',
+    'description': 'This forms grants organizations or other third parties permission to speak with the DTA (Department of Transitional Assistance) and for the DTA to share case records and information about the client. With authorization an organization can discuss your application or benefits with a DTA employee. The form is valid for 12 months unless stated otherwise. This form requires either the last 4 digits of your social security number or a DTA agency ID number. It also requires the name and location of the organization getting authorization.',
+    'original_form': 'https://www.masslegalservices.org/DTA_release',
+    'allowed courts': [
+    ],
+    'categories': [
+      'Other',
+      'Economic Assistance',
+    ],
+    'logic block variable': 'permission_access_dta_info_',
+    'attachment block variable': 'permission_access_dta_info__attachment',
+    'typical role': 'plaintiff',
+  })
+  user_address= users[0].address
+---
+features:
+  navigation: True
+---
+sections:
+  - review_permission_access_dta_info_: Review your answers
+---
+id: interview_order_permission_access_dta_info_
+code: |
+  # This is a placeholder to control logic flow in this interview
+  basic_questions_intro_screen 
+  permission_access_dta_info__intro
+  # Set the allowed courts for this interview
+  allowed_courts = interview_metadata["permission_access_dta_info_"]["allowed courts"]
+  nav.set_section('review_permission_access_dta_info_')
+  user_role = 'plaintiff'
+  social_security_number
+  user_address
+  organization_name
+  # Set the answer file name.
+  set_parts(subtitle=str(users))
+  str(users[0])
+  users[0].birthdate.format()
+  set_progress(14.29)
+  signature_date
+  # Save (anonymized) interview statistics.
+  store_variables_snapshot(data={'zip': users[0].address.zip})
+  permission_access_dta_info__preview_question # Pre-canned preview screen
+  basic_questions_signature_flow
+  users[0].signature
+  permission_access_dta_info_ = True
+---
+comment: |
+  This question is used to introduce your interview. Please customize
+id: Permission to Access DTA Client Case Information
+continue button field: permission_access_dta_info__intro
+question: |
+  Permission to Access DTA Client Case Information
+subquestion: |
+  This forms grants organizations or other third parties permission to speak with the DTA (Department of Transitional Assistance) and for the DTA to share case records and information about the client. With authorization an organization can discuss your application or benefits with a DTA employee. The form is valid for 12 months unless stated otherwise. This form requires either the last 4 digits of your social security number or a DTA agency ID number. It also requires the name and location of the organization getting authorization.
+---
+id: Review your form before you sign it
+continue button field: permission_access_dta_info__preview_question
+question: |
+  Review your form before you sign it
+subquestion: |
+  Here is a preview of the form you'll sign on the next page. 
+  
+   ${ pdf_concatenate(permission_access_dta_info__attachment['preview'], filename='permission_access_dta_info_.pdf')}
+---
+id: What are the last 4 digits of your Social Security Number or Agency ID Number
+question: |
+  What are the last 4 digits of your Social Security Number or Agency ID Number?
+subquestion: |
+  The DTA requires the last 4 digits of your Social Security Number or Agency ID Number in order to help identify your case.
+fields:
+  - 'Social security number': social_security_number
+    maxlength: 4
+    required: false
+  - 'Agency number': agency_number
+    maxlength: 17
+    required: false
+---
+id: What is the name of the Organization getting access to the DTA case information
+question: |
+  What is the name of the Organization getting access to the DTA case information?
+subquestion: |
+  Name of the Organization and City or Town the Organization is located in.
+fields:
+  - 'Organization name': organization_name
+    maxlength: 31
+  - 'City or town': city_town
+    maxlength: 24
+---
+progress: 100
+mandatory: True
+id: Your form is ready to download and file
+question: |
+  Your form is ready to download and file
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver. This form can be sent to the DTA in a few different ways. First, you can send it through the DTA Connect mobile app. This is a free App that can be downloaded from Google Play or the App Store. Second, you can fax the form to (617)-887-8765. Third, you can mail it to the DTA document processing center, P.O. box 4406, Taunton, MA 02780. Lastly, you can bring it in person to the local DTA office. All the options are given at the bottom of your form. 
+  
+  Below is a preview of your form.
+  
+  ${pdf_concatenate(permission_access_dta_info__attachment['final'], filename='permission_access_dta_info_.pdf') }
+need: permission_access_dta_info_
+attachment code: permission_access_dta_info__attachment['final']
+---
+objects:
+  - permission_access_dta_info__attachment: DADict
+---
+attachment:
+    variable name: permission_access_dta_info__attachment[i]
+    name: Permission access DTA info
+    filename: Permission_access_DTA_info
+    skip undefined: True
+    pdf template file: permission_access_dta_info_1.pdf
+    fields: 
+      - "user_name_full": ${ str(users[0]) }
+      - "user_birthdate": ${ format_date(users[0].birthdate, format='M/d/yyyy' ) }
+      - "signature_date": ${ signature_date }
+      # If it is a signature, test which file version we're expecting. leave it empty unless it's the final attachment version
+      - "user_signature": ${ users[0].signature if i == 'final' else '' }
+      - "user_address": ${ user_address }
+      - "social_security_number": ${ social_security_number }
+      - "agency_number": ${ agency_number }
+      - "organization_name": ${ organization_name }
+      - "city_town": ${ city_town }
+---
+id: permission_access_dta_info_ review screen
+event: review_permission_access_dta_info_
+question: |
+  Placeholder Review Screen
+subquestion: |
+  Edit your answers below
+review: 
+  - Edit: user_address
+    button: |
+      User address:
+      ${ user_address }
+  - Edit: social_security_number
+    button: |
+      Social security number:
+      ${ social_security_number }
+  - Edit: agency_number
+    button: |
+      Agency number:
+      ${ agency_number }
+  - Edit: organization_name
+    button: |
+      Organization name:
+      ${ organization_name }
+  - Edit: city_town
+    button: |
+      City town:
+      ${ city_town }
+  - Edit: users[0]
+    button: |
+      users[0]:
+      ${ users[0] }
+  - Edit: users[0].birthdate
+    button: |
+      users[0].birthdate:
+      ${ users[0].birthdate }
+  - Edit: signature_date
+    button: |
+      signature_date:
+      ${ signature_date }
+  - Edit: users[0].signature
+    button: |
+      users[0].signature:
+      ${ users[0].signature }
