@@ -128,7 +128,7 @@ attachment:
     name: Permission access DTA info
     filename: Permission_access_DTA_info
     skip undefined: True
-    pdf template file: permission_access_dta_info_1.pdf
+    pdf template file: permission_access_dta_info.pdf
     fields: 
       - "user_name_full": ${ str(users[0]) }
       - "user_birthdate": ${ format_date(users[0].birthdate, format='M/d/yyyy' ) }
