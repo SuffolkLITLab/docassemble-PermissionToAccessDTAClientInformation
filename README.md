@@ -31,7 +31,7 @@ The LIST codes are the deepest supported terms for this cross-program consent: S
 Three ALKiln scenarios are in `data/sources/dta_consent.feature`:
 
 1. An organization receives permission using an Agency ID, with no known phone number.
-2. A trusted person receives permission using an SSN ending in zero-prefixed digits; invalid characters are rejected, and editing to an Agency ID removes the old SSN from the regenerated output.
+2. A trusted person receives permission using an SSN ending in zero-prefixed digits; invalid characters are rejected, and editing to an Agency ID updates the saved answers before the final download. The Python output tests separately check that the old SSN is omitted.
 3. A user who wants an authorized representative is directed to that interview before entering personal information.
 
 The output checks render the real Word template and check selected identifiers, blank signature/date lines, and long recipient names/addresses:
@@ -42,13 +42,11 @@ python -m unittest discover -s tests -p 'test_*.py'
 
 Dependencies for these tests: `docxtpl`, `python-docx`, and `jinja2`.
 
-For a package already installed on a development server, `tests/run_alkiln.py` uses the `localhost` entry in `~/.docassemblecli` and an ALKiln checkout at `~/ALKiln` (or `ALKILN_PATH`). It keeps credentials out of generated files. Install this package on the test server first, then run:
+Use the standard ALKiln runner and built-in ALKiln 5 steps. Follow the [official setup guide](https://assemblyline.suffolklitlab.org/docs/components/ALKiln/setup) and [AI-assisted testing guide](https://assemblyline.suffolklitlab.org/docs/automated_quality_checks/ai_testing). No repository-specific runner or framework overrides are needed.
 
-```sh
-python tests/run_alkiln.py
-```
+The three browser scenarios check successful downloads, invalid SSN input, answer editing, the resulting case-ID variables, and scope exits. Each scenario downloads a filename only once, as required by ALKiln. The Python tests above retain direct real-template checks for leading-zero SSNs, excluding an inactive/stale SSN after selecting an Agency ID, and long recipient names/addresses.
 
-The browser suite downloads and examines generated PDFs; it requires `pdftotext`. Artifacts are ignored by Git under `.alkiln-artifacts/`. The local compatibility helpers recognize review screens that reuse their URL, retry read-only navigation probes when a page reload destroys a browser context, and remove a previously downloaded copy before checking regenerated output. The phone-width check excludes only the development server's injected debug paragraph.
+Manual release checks remain: open the PDF downloaded after changing the identifier and confirm it contains the new Agency ID and no old SSN; compare client/recipient/address/signature lines; inspect the interview at a 390px viewport for horizontal overflow; and inspect the final PDF's tag structure and long-answer layout. A screenshot step alone is not an automated mobile-layout assertion. The prior 3-scenario/46-step local result used the now-removed custom harness; it is historical evidence, not a pass of the standard runner. The converted scenarios have been checked for defined steps with Cucumber dry-run; a fresh standard-runner execution remains needed.
 
 `maturity: testing` is intentional until the release review is complete. Automated checks do not attest attorney approval.
 

@@ -17,14 +17,8 @@ Feature: Give a trusted person or organization permission to discuss DTA cases
       | recipient_phone | | |
     Then I should see the phrase "This form has not been sent to DTA."
     And I download "dta_information_release.pdf"
-    And the downloaded PDF "dta_information_release.pdf" should contain "Maya Example"
-    And the downloaded PDF "dta_information_release.pdf" should contain "123456789"
-    And the downloaded PDF "dta_information_release.pdf" should contain "Example Community Food Pantry"
-    And the downloaded PDF "dta_information_release.pdf" should contain "Suite 4, Boston, MA 02110"
-    And the downloaded PDF "dta_information_release.pdf" should contain "Client/Applicant Signature:"
-    And the downloaded PDF "dta_information_release.pdf" should not contain "None"
-    When I follow the review link containing "Edit answers"
-    And I follow the review link containing "Permission:"
+    When I tap the "#daquestion a[data-embaction='eyJhY3Rpb24iOiAiZHRhX3JldmlldyIsICJhcmd1bWVudHMiOiB7fX0']" element
+    And I tap the "#daquestion a[data-embaction='eyJhY3Rpb24iOiAicGVybWlzc2lvbl9wdXJwb3NlIiwgImFyZ3VtZW50cyI6IHt9fQ']" element
     And I get to "dta review" with this data:
       | var | value | trigger |
       | permission_purpose | representative | |
@@ -36,7 +30,6 @@ Feature: Give a trusted person or organization permission to discuss DTA cases
   @ssn_edit
   Scenario: Lee uses a four-digit SSN and then switches to an Agency ID
     Given I start the interview at "permission_to_access_dta_client_information.yml"
-    And I use a narrow phone viewport
     And the maximum seconds for each step is 90
     When I get to "dta identifier" with this data:
       | var | value | trigger |
@@ -55,22 +48,28 @@ Feature: Give a trusted person or organization permission to discuss DTA cases
       | recipient_name | Jordan Example | |
       | recipient_address | 200 Example Road, Apartment 12, Springfield, MA 01103 | |
       | recipient_phone | 4135550100 | |
-    And I download "dta_information_release.pdf"
-    Then the downloaded PDF "dta_information_release.pdf" should contain "0123"
-    When I follow the review link containing "Edit answers"
-    And I follow the review link containing "Case number:"
+    Then the text in the JSON variable "ssn_last_four" should be
+      """
+      0123
+      """
+    When I tap the "#daquestion a[data-embaction='eyJhY3Rpb24iOiAiZHRhX3JldmlldyIsICJhcmd1bWVudHMiOiB7fX0']" element
+    And I tap the "#daquestion a[data-embaction='eyJhY3Rpb24iOiAiZHRhX2lkZW50aWZpZXJfa2luZCIsICJhcmd1bWVudHMiOiB7fX0']" element
     And I get to "dta review" with this data:
       | var | value | trigger |
       | dta_identifier_kind | agency | |
       | dta_agency_id | 987654321 | |
     And I continue
     Then the question id should be "dta download"
-    When I download a fresh copy of "dta_information_release.pdf"
-    Then the downloaded PDF "dta_information_release.pdf" should contain "987654321"
-    And the downloaded PDF "dta_information_release.pdf" should not contain "0123"
-    And the downloaded PDF "dta_information_release.pdf" should contain "Jordan Example"
-    And the interview fits the phone width
-    And I take a screenshot named "phone-download"
+    And the text in the JSON variable "dta_identifier_kind" should be
+      """
+      agency
+      """
+    And the text in the JSON variable "dta_agency_id" should be
+      """
+      987654321
+      """
+    And I download "dta_information_release.pdf"
+    And I take a screenshot named "download-after-edit"
 
   @scope
   Scenario: A client who wants help signing applications gets the correct alternative
