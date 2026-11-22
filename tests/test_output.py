@@ -1,8 +1,4 @@
-"""Regression checks against the actual Word template, including dormant ID values.
-
-Run with: python -m unittest discover -s tests -p 'test_*.py'
-Requires python-docx, docxtpl and jinja2.
-"""
+"""Check consent output, including leading zeros, inactive IDs and long answers."""
 from pathlib import Path
 import tempfile
 import unittest

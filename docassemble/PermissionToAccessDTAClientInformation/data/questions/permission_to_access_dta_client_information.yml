@@ -58,11 +58,9 @@ metadata:
   integrated_efiling: false
   integrated_email_filing: false
   requires_notarization: false
-  update_notes: >-
-    Updated to the official VARI-OI form, Rev. 9/2017, still distributed by
-    Massachusetts DTA on November 22, 2026. Added clear consent scope, print-sign
-    instructions, answer review, identifier validation, and current LIST metadata.
-    Publication approval is pending.
+  update_notes: |
+    Uses the DTA VARI-OI form, Rev. 9/2017. Explains the consent limits,
+    checks the case ID, and includes answer review and print-and-sign steps.
 ---
 code: |
   al_form_type = "other"
