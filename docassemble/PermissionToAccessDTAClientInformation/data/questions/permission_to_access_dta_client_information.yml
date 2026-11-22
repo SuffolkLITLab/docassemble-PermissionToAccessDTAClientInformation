@@ -1,186 +1,281 @@
+---
 include:
-  - docassemble.MAVirtualCourt:basic-questions.yml
+  - docassemble.AssemblyLine:assembly_line.yml
 ---
-comment: |
-  The metadata section controls the tab title and saved interview title. You can delete this section if you include this YAML file in another YAML file.
 metadata:
-  title: |
-    Permission to Access DTA Client Case Information
-  short title: |
-    Permission access DTA info
+  title: Give someone permission to talk with Massachusetts DTA
+  short title: DTA information release
+  description: >-
+    Make a Massachusetts DTA Voluntary Consent to Release Information form (VARI-OI).
+    Give a trusted person or organization permission to discuss your SNAP, TAFDC,
+    or EAEDC benefit cases with DTA. Review your answers, then print, sign, and
+    send the form. This does not let someone sign applications or use your benefits.
+  can_I_use_this_form: |
+    Use this form if you receive or have applied for Massachusetts DTA benefits
+    and want DTA to share case information with a person or organization you trust.
+    The DTA client must sign the finished form. A helper can fill in the answers.
+    Permission lasts for one year unless you cancel it sooner.
+  before_you_start: |
+    Have the DTA client's name, date of birth, and DTA Agency ID or last four
+    digits of their Social Security number. Have the name, address, and phone
+    number, if known, of the person or organization that will get the information.
+    You will need to print the form so the DTA client can sign it.
+  when_you_are_finished: |
+    Print the form. The DTA client must sign and date it. Send it to DTA through
+    DTA Connect, by fax, or by mail. Keep a copy.
+  authors:
+    - Trevor Mears
+    - Suffolk LIT Lab
+  jurisdiction: NAM-US-US+MA
+  languages:
+    - en
+  maturity: testing
+  estimated_completion_minutes: 5
+  estimated_completion_delta: 3
+  LIST_topics:
+    - BE-02-01-00-00
+    - BE-02-02-00-00
+    - BE-02-05-00-00
+    - GO-02-00-00-00
+  tags:
+    - BE-02-01-00-00
+    - BE-02-02-00-00
+    - BE-02-05-00-00
+    - GO-02-00-00-00
+  original_form:
+    - https://www.mass.gov/doc/voluntary-consent-to-release-information-vari-oi/download
+    - https://www.mass.gov/doc/voluntary-consent-to-release-information-vari-oi-0/download
+  help_page_url: https://www.mass.gov/lists/voluntary-consent-to-release-information
+  help_page_title: DTA voluntary consent form and instructions
+  form_titles:
+    - Voluntary Consent to Release Information
+  form_numbers:
+    - VARI-OI
+  allowed_courts: []
+  typical_role: na
+  efiling_enabled: false
+  integrated_efiling: false
+  integrated_email_filing: false
+  requires_notarization: false
+  update_notes: >-
+    Updated to the official VARI-OI form, Rev. 9/2017, still distributed by
+    Massachusetts DTA on November 22, 2026. Added clear consent scope, print-sign
+    instructions, answer review, identifier validation, and current LIST metadata.
+    Publication approval is pending.
 ---
-comment: |
-  This section is used by MAVirtualCourts to control how some of the questions work.
-mandatory: True
 code: |
-  interview_metadata # make sure we initialize the object
-  if not defined("interview_metadata['permission_access_dta_info_']"):
-    interview_metadata.initializeObject('permission_access_dta_info_')
-  interview_metadata['permission_access_dta_info_'].update({
-    'title': 'Permission to Access DTA Client Case Information',
-    'short title': 'Permission access DTA info',
-    'description': 'This forms grants organizations or other third parties permission to speak with the DTA (Department of Transitional Assistance) and for the DTA to share case records and information about the client. With authorization an organization can discuss your application or benefits with a DTA employee. The form is valid for 12 months unless stated otherwise. This form requires either the last 4 digits of your social security number or a DTA agency ID number. It also requires the name and location of the organization getting authorization.',
-    'original_form': 'https://www.masslegalservices.org/DTA_release',
-    'allowed courts': [
-    ],
-    'categories': [
-      'Other',
-      'Economic Assistance',
-    ],
-    'logic block variable': 'permission_access_dta_info_',
-    'attachment block variable': 'permission_access_dta_info__attachment',
-    'typical role': 'plaintiff',
-  })
-  user_address= users[0].address
+  al_form_type = "other"
+  AL_DEFAULT_COUNTRY = "US"
+  AL_DEFAULT_STATE = "MA"
+  github_repo_name = "docassemble-PermissionToAccessDTAClientInformation"
+---
+template: interview_short_title
+content: |
+  Give someone permission to talk with DTA
 ---
 features:
-  navigation: True
+  navigation: true
+  cache documents: false
 ---
 sections:
-  - review_permission_access_dta_info_: Review your answers
+  - dta_review: Review your answers
 ---
-id: interview_order_permission_access_dta_info_
+initial: true
 code: |
-  # This is a placeholder to control logic flow in this interview
-  basic_questions_intro_screen 
-  permission_access_dta_info__intro
-  # Set the allowed courts for this interview
-  allowed_courts = interview_metadata["permission_access_dta_info_"]["allowed courts"]
-  nav.set_section('review_permission_access_dta_info_')
-  user_role = 'plaintiff'
-  social_security_number
-  user_address
-  organization_name
-  # Set the answer file name.
-  set_parts(subtitle=str(users))
-  str(users[0])
-  users[0].birthdate.format()
-  set_progress(14.29)
-  signature_date
-  # Save (anonymized) interview statistics.
-  store_variables_snapshot(data={'zip': users[0].address.zip})
-  permission_access_dta_info__preview_question # Pre-canned preview screen
-  basic_questions_signature_flow
-  users[0].signature
-  permission_access_dta_info_ = True
+  # Regenerate the attachment after a client edits any answer.
+  undefine("dta_consent")
 ---
-comment: |
-  This question is used to introduce your interview. Please customize
-id: Permission to Access DTA Client Case Information
-continue button field: permission_access_dta_info__intro
-question: |
-  Permission to Access DTA Client Case Information
-subquestion: |
-  This forms grants organizations or other third parties permission to speak with the DTA (Department of Transitional Assistance) and for the DTA to share case records and information about the client. With authorization an organization can discuss your application or benefits with a DTA employee. The form is valid for 12 months unless stated otherwise. This form requires either the last 4 digits of your social security number or a DTA agency ID number. It also requires the name and location of the organization getting authorization.
+mandatory: true
+code: |
+  al_intro_screen
+  dta_intro
+  if permission_purpose != "information":
+    dta_other_help
+  client_name
+  client_birthdate
+  dta_identifier_kind
+  if dta_identifier_kind == "ssn":
+    ssn_last_four
+  else:
+    dta_agency_id
+  recipient_name
+  recipient_address
+  recipient_phone
+  dta_preview
+  dta_download
 ---
-id: Review your form before you sign it
-continue button field: permission_access_dta_info__preview_question
+id: dta introduction
 question: |
-  Review your form before you sign it
+  Let someone talk with DTA about your benefits
 subquestion: |
-  Here is a preview of the form you'll sign on the next page. 
-  
-   ${ pdf_concatenate(permission_access_dta_info__attachment['preview'], filename='permission_access_dta_info_.pdf')}
+  DTA is the Massachusetts Department of Transitional Assistance. It manages
+  SNAP (food stamps), TAFDC, and EAEDC cash benefits.
+
+  Name **one person or organization** you trust. This form lets DTA share and
+  receive private information about your benefit cases with them.
+  The DTA client must sign the finished form.
+
+  This permission lasts for **one year**. You can cancel it sooner by calling
+  DTA at 1-877-382-2363 or by sending DTA a written request.
+
+  It does not let someone sign applications or use your benefits. Those tasks
+  need a different form.
+continue button field: dta_intro
 ---
-id: What are the last 4 digits of your Social Security Number or Agency ID Number
+id: dta permission purpose
 question: |
-  What are the last 4 digits of your Social Security Number or Agency ID Number?
-subquestion: |
-  The DTA requires the last 4 digits of your Social Security Number or Agency ID Number in order to help identify your case.
+  What do you want this person or organization to do?
 fields:
-  - 'Social security number': social_security_number
+  - no label: permission_purpose
+    input type: radio
+    choices:
+      - Talk with DTA and share information about my benefit cases: information
+      - Sign forms for me or use my benefits: representative
+      - I am not sure: unsure
+---
+id: dta other help
+event: dta_other_help
+question: |
+  Choose the right kind of help
+subquestion: |
+  This interview only gives permission to discuss and share DTA case information.
+
+  To let someone sign SNAP forms or use your benefits, use the
+  [DTA authorized representative interview](https://apps.suffolklitlab.org/interview?i=docassemble.AuthorizeFoodBenefitsRepresentative%3Adata%2Fquestions%2Fauthorize_food_benefits_representative.yml).
+
+  If you are not sure which form you need, call DTA at **1-877-382-2363**.
+
+  ${ action_button_html(url_action('permission_purpose'), label='Change my answer', color='primary') }
+buttons:
+  - Exit: exit
+    url: https://www.mass.gov/lists/voluntary-consent-to-release-information
+---
+id: dta client
+question: |
+  Who is the DTA client?
+subquestion: |
+  Enter the name of the person whose benefit information DTA will share.
+  Use the name on their DTA case. If you are helping someone, enter their name.
+fields:
+  - Full name: client_name
+  - Date of birth: client_birthdate
+    datatype: date
+    max: ${ today() }
+---
+id: dta identifier
+question: |
+  Which number will identify the DTA case?
+subquestion: |
+  The Agency ID is on DTA notices. You can use it instead of the last four
+  digits of the client's Social Security number. Do not enter a full Social Security number.
+fields:
+  - Number to use: dta_identifier_kind
+    input type: radio
+    choices:
+      - DTA Agency ID: agency
+      - Last four digits of Social Security number: ssn
+  - DTA Agency ID: dta_agency_id
+    datatype: text
+    show if:
+      variable: dta_identifier_kind
+      is: agency
+  - Last four digits: ssn_last_four
+    datatype: text
+    minlength: 4
     maxlength: 4
-    required: false
-  - 'Agency number': agency_number
-    maxlength: 17
-    required: false
+    show if:
+      variable: dta_identifier_kind
+      is: ssn
+validation code: |
+  if dta_identifier_kind == "ssn" and (len(ssn_last_four) != 4 or any(c not in "0123456789" for c in ssn_last_four)):
+    validation_error("Enter exactly four digits, like 0123.", field="ssn_last_four")
+  if dta_identifier_kind == "agency" and not dta_agency_id.strip():
+    validation_error("Enter the Agency ID from a DTA notice.", field="dta_agency_id")
 ---
-id: What is the name of the Organization getting access to the DTA case information
+id: dta recipient
 question: |
-  What is the name of the Organization getting access to the DTA case information?
+  Who may get the DTA case information?
 subquestion: |
-  Name of the Organization and City or Town the Organization is located in.
+  Name **one** trusted person or organization. This is who DTA may talk with
+  about your cases. For an organization, use its full name and mailing address.
 fields:
-  - 'Organization name': organization_name
-    maxlength: 31
-  - 'City or town': city_town
-    maxlength: 24
+  - Person or organization name: recipient_name
+  - Mailing address: recipient_address
+    input type: area
+    rows: 3
+    help: |
+      Include the street and unit, city or town, state, and ZIP code.
+  - Phone number, if known: recipient_phone
+    datatype: text
+    required: false
 ---
-progress: 100
-mandatory: True
-id: Your form is ready to download and file
+id: dta preview
 question: |
-  Your form is ready to download and file
+  Check the form before you print it
 subquestion: |
-  Thank you ${users}. Your form is ready to download and deliver. This form can be sent to the DTA in a few different ways. First, you can send it through the DTA Connect mobile app. This is a free App that can be downloaded from Google Play or the App Store. Second, you can fax the form to (617)-887-8765. Third, you can mail it to the DTA document processing center, P.O. box 4406, Taunton, MA 02780. Lastly, you can bring it in person to the local DTA office. All the options are given at the bottom of your form. 
-  
-  Below is a preview of your form.
-  
-  ${pdf_concatenate(permission_access_dta_info__attachment['final'], filename='permission_access_dta_info_.pdf') }
-need: permission_access_dta_info_
-attachment code: permission_access_dta_info__attachment['final']
+  Check the client's name and case number. Make sure this is the person or
+  organization the client wants DTA to share information with.
+
+  ${ dta_consent }
+
+  ${ action_button_html(url_action('dta_review'), label='Edit answers', color='primary') }
+
+  The signature and date are blank. The DTA client will fill them in by hand.
+continue button field: dta_preview
 ---
-objects:
-  - permission_access_dta_info__attachment: DADict
+id: dta review
+event: dta_review
+question: |
+  Review your answers
+review:
+  - Edit: permission_purpose
+    button: |
+      **Permission:** Talk with DTA and share information about benefit cases
+  - Edit: client_name
+    button: |
+      **DTA client:** ${ client_name }
+      **Date of birth:** ${ format_date(client_birthdate) }
+  - Edit: dta_identifier_kind
+    button: |
+      **Case identification:**
+      % if dta_identifier_kind == "ssn":
+      Last four digits of Social Security number: ${ ssn_last_four }
+      % else:
+      DTA Agency ID: ${ dta_agency_id }
+      % endif
+  - Edit: recipient_name
+    button: |
+      **Person or organization:** ${ recipient_name }
+      **Address:** ${ recipient_address }
+      **Phone:** ${ recipient_phone or 'Not provided' }
+---
+id: dta download
+event: dta_download
+question: |
+  Print, sign, and send your DTA consent
+subquestion: |
+  **This form has not been sent to DTA.**
+
+  1. Download and print it. The DTA client must sign and date Section 5.
+  2. Send the signed form to DTA using one of the options below.
+  3. Keep a copy. You can also give a copy to the person or organization you named.
+
+  **Ways to send it:**
+
+  * Upload a clear photo or scan through [DTA Connect](https://www.mass.gov/dtaconnect).
+  * Fax it to **617-887-8765**.
+  * Mail it to **DTA Document Processing Center, P.O. Box 4406, Taunton, MA 02780-0420**.
+
+  To cancel this permission, call **1-877-382-2363** during business hours
+  and speak with a DTA representative. Or send DTA a written request by mail or fax.
+
+  ${ action_button_html(url_action('dta_review'), label='Edit answers', color='primary') }
+attachment code: dta_consent
 ---
 attachment:
-    variable name: permission_access_dta_info__attachment[i]
-    name: Permission access DTA info
-    filename: Permission_access_DTA_info
-    skip undefined: True
-    pdf template file: permission_access_dta_info.pdf
-    fields: 
-      - "user_name_full": ${ str(users[0]) }
-      - "user_birthdate": ${ format_date(users[0].birthdate, format='M/d/yyyy' ) }
-      - "signature_date": ${ signature_date }
-      # If it is a signature, test which file version we're expecting. leave it empty unless it's the final attachment version
-      - "user_signature": ${ users[0].signature if i == 'final' else '' }
-      - "user_address": ${ user_address }
-      - "social_security_number": ${ social_security_number }
-      - "agency_number": ${ agency_number }
-      - "organization_name": ${ organization_name }
-      - "city_town": ${ city_town }
----
-id: permission_access_dta_info_ review screen
-event: review_permission_access_dta_info_
-question: |
-  Placeholder Review Screen
-subquestion: |
-  Edit your answers below
-review: 
-  - Edit: user_address
-    button: |
-      User address:
-      ${ user_address }
-  - Edit: social_security_number
-    button: |
-      Social security number:
-      ${ social_security_number }
-  - Edit: agency_number
-    button: |
-      Agency number:
-      ${ agency_number }
-  - Edit: organization_name
-    button: |
-      Organization name:
-      ${ organization_name }
-  - Edit: city_town
-    button: |
-      City town:
-      ${ city_town }
-  - Edit: users[0]
-    button: |
-      users[0]:
-      ${ users[0] }
-  - Edit: users[0].birthdate
-    button: |
-      users[0].birthdate:
-      ${ users[0].birthdate }
-  - Edit: signature_date
-    button: |
-      signature_date:
-      ${ signature_date }
-  - Edit: users[0].signature
-    button: |
-      users[0].signature:
-      ${ users[0].signature }
+  name: DTA Voluntary Consent to Release Information
+  filename: dta_information_release
+  variable name: dta_consent
+  docx template file: dta_voluntary_consent.docx
+  valid formats:
+    - pdf
