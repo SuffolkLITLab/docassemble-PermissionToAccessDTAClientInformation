@@ -17,6 +17,7 @@ Feature: Give a trusted person or organization permission to discuss DTA cases
       | recipient_phone | | |
     Then I should see the phrase "This form has not been sent to DTA."
     And I download "dta_information_release.pdf"
+    And I expect the baseline PDF "dta-agency-baseline.pdf" and the new PDF "dta_information_release.pdf" to be the same
     When I tap the "#daquestion a[data-embaction='eyJhY3Rpb24iOiAiZHRhX3JldmlldyIsICJhcmd1bWVudHMiOiB7fX0']" element
     And I tap the "#daquestion a[data-embaction='eyJhY3Rpb24iOiAicGVybWlzc2lvbl9wdXJwb3NlIiwgImFyZ3VtZW50cyI6IHt9fQ']" element
     And I get to "dta review" with this data:
@@ -69,6 +70,7 @@ Feature: Give a trusted person or organization permission to discuss DTA cases
       987654321
       """
     And I download "dta_information_release.pdf"
+    And I expect the baseline PDF "dta-edited-id-baseline.pdf" and the new PDF "dta_information_release.pdf" to be the same
     And I take a screenshot named "download-after-edit"
 
   @scope
