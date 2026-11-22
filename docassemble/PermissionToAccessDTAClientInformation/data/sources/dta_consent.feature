@@ -47,7 +47,7 @@ Feature: Give a trusted person or organization permission to discuss DTA cases
     When I set the variable "dta_identifier_kind" to "ssn"
     And I set the variable "ssn_last_four" to "abcd"
     And I cannot continue
-    Then I should see the phrase "Enter exactly four digits"
+    Then I should see the phrase "Enter four numbers"
     When I get to "dta download" with this data:
       | var | value | trigger |
       | dta_identifier_kind | ssn | |
@@ -58,7 +58,7 @@ Feature: Give a trusted person or organization permission to discuss DTA cases
     And I download "dta_information_release.pdf"
     Then the downloaded PDF "dta_information_release.pdf" should contain "0123"
     When I follow the review link containing "Edit answers"
-    And I follow the review link containing "Case identification:"
+    And I follow the review link containing "Case number:"
     And I get to "dta review" with this data:
       | var | value | trigger |
       | dta_identifier_kind | agency | |
@@ -81,5 +81,5 @@ Feature: Give a trusted person or organization permission to discuss DTA cases
       | acknowledged_information_use | True | |
       | permission_purpose | representative | |
     Then I should see the phrase "Choose the right kind of help"
-    And I should see the link "DTA authorized representative interview"
-    And I should not see the phrase "Print, sign, and send your DTA consent"
+    And I should see the link "Choose someone to help with your benefits"
+    And I should not see the phrase "Print, sign, and send your DTA form"

@@ -6,19 +6,21 @@ metadata:
   title: Give someone permission to talk with Massachusetts DTA
   short title: DTA information release
   description: >-
-    Make a Massachusetts DTA Voluntary Consent to Release Information form (VARI-OI).
-    Give a trusted person or organization permission to discuss your SNAP, TAFDC,
-    or EAEDC benefit cases with DTA. Review your answers, then print, sign, and
-    send the form. This does not let someone sign applications or use your benefits.
+    Let someone talk with Massachusetts DTA about your benefits.
+    Make the Voluntary Consent to Release Information form (VARI-OI).
+    It lets DTA share facts about your SNAP (food stamps), TAFDC, or EAEDC cash benefits.
+    Choose a person or group you trust. Check your answers, then print, sign, and send the form.
+    This does not let someone sign forms or use your benefits.
   can_I_use_this_form: |
-    Use this form if you receive or have applied for Massachusetts DTA benefits
-    and want DTA to share case information with a person or organization you trust.
-    The DTA client must sign the finished form. A helper can fill in the answers.
+    Use this form if you get or have applied for Massachusetts DTA benefits.
+    It lets DTA share facts about your case with a person or group you trust.
+    The person whose case it is must sign the form. A helper can fill in the answers.
     Permission lasts for one year unless you cancel it sooner.
   before_you_start: |
-    Have the DTA client's name, date of birth, and DTA Agency ID or last four
-    digits of their Social Security number. Have the name, address, and phone
-    number, if known, of the person or organization that will get the information.
+    Have the DTA client's name and date of birth. Have their DTA Agency ID
+    or the last four numbers of their Social Security number.
+    Have the name and address of the person or group you want DTA to talk with.
+    Bring their phone number too, if you know it.
     You will need to print the form so the DTA client can sign it.
   when_you_are_finished: |
     Print the form. The DTA client must sign and date it. Send it to DTA through
@@ -107,23 +109,24 @@ id: dta introduction
 question: |
   Let someone talk with DTA about your benefits
 subquestion: |
-  DTA is the Massachusetts Department of Transitional Assistance. It manages
+  DTA is the Massachusetts Department of Transitional Assistance. It runs
   SNAP (food stamps), TAFDC, and EAEDC cash benefits.
 
-  Name **one person or organization** you trust. This form lets DTA share and
-  receive private information about your benefit cases with them.
-  The DTA client must sign the finished form.
+  Name **one person or group** you trust. A group could be a food pantry or legal aid office.
+  This form lets DTA share private facts about your benefit cases with them.
+  It also lets DTA get facts from them. The DTA client is the person whose case it is.
+  The client must sign the form.
 
-  This permission lasts for **one year**. You can cancel it sooner by calling
-  DTA at 1-877-382-2363 or by sending DTA a written request.
+  This permission lasts for **one year**. You can cancel it sooner.
+  Call DTA at 1-877-382-2363 or write to DTA to ask to cancel it.
 
-  It does not let someone sign applications or use your benefits. Those tasks
-  need a different form.
+  It does not let someone sign forms or use your benefits.
+  You need a different form for that.
 continue button field: dta_intro
 ---
 id: dta permission purpose
 question: |
-  What do you want this person or organization to do?
+  What do you want this person or group to do?
 fields:
   - no label: permission_purpose
     input type: radio
@@ -137,10 +140,11 @@ event: dta_other_help
 question: |
   Choose the right kind of help
 subquestion: |
-  This interview only gives permission to discuss and share DTA case information.
+  This form only lets someone talk with DTA and share facts about your case.
 
-  To let someone sign SNAP forms or use your SNAP, TAFDC, or EAEDC benefits, use the
-  [DTA authorized representative interview](https://apps.suffolklitlab.org/interview?i=docassemble.AuthorizeFoodBenefitsRepresentative%3Adata%2Fquestions%2Fauthorize_food_benefits_representative.yml).
+  Do you want someone to sign SNAP forms or use your benefits?
+  This includes SNAP, TAFDC, or EAEDC. Use this tool:
+  [Choose someone to help with your benefits](https://apps.suffolklitlab.org/interview?i=docassemble.AuthorizeFoodBenefitsRepresentative%3Adata%2Fquestions%2Fauthorize_food_benefits_representative.yml).
 
   If you are not sure which form you need, call DTA at **1-877-382-2363**.
 
@@ -153,7 +157,7 @@ id: dta client
 question: |
   Who is the DTA client?
 subquestion: |
-  Enter the name of the person whose benefit information DTA will share.
+  Enter the name of the person whose case DTA will talk about.
   Use the name on their DTA case. If you are helping someone, enter their name.
 fields:
   - Full name: client_name
@@ -163,22 +167,23 @@ fields:
 ---
 id: dta identifier
 question: |
-  Which number will identify the DTA case?
+  Which case number will you use?
 subquestion: |
-  The Agency ID is on DTA notices. You can use it instead of the last four
-  digits of the client's Social Security number. Do not enter a full Social Security number.
+  The Agency ID is on DTA letters. Use that number if you have it.
+  Or use the last four numbers of the client’s Social Security number.
+  Do not enter the full Social Security number.
 fields:
   - Number to use: dta_identifier_kind
     input type: radio
     choices:
       - DTA Agency ID: agency
-      - Last four digits of Social Security number: ssn
+      - Last four numbers of Social Security number: ssn
   - DTA Agency ID: dta_agency_id
     datatype: text
     show if:
       variable: dta_identifier_kind
       is: agency
-  - Last four digits: ssn_last_four
+  - Last four numbers: ssn_last_four
     datatype: text
     minlength: 4
     maxlength: 4
@@ -187,7 +192,7 @@ fields:
       is: ssn
 validation code: |
   if dta_identifier_kind == "ssn" and (len(ssn_last_four) != 4 or any(c not in "0123456789" for c in ssn_last_four)):
-    validation_error("Enter exactly four digits, like 0123.", field="ssn_last_four")
+    validation_error("Enter four numbers, like 0123.", field="ssn_last_four")
   if dta_identifier_kind == "agency" and not dta_agency_id.strip():
     validation_error("Enter the Agency ID from a DTA notice.", field="dta_agency_id")
 ---
@@ -195,10 +200,10 @@ id: dta recipient
 question: |
   Who may get the DTA case information?
 subquestion: |
-  Name **one** trusted person or organization. This is who DTA may talk with
-  about your cases. For an organization, use its full name and mailing address.
+  Name **one** person or group you trust. This is who DTA may talk with
+  about your cases. For a group, use its full name and mailing address.
 fields:
-  - Person or organization name: recipient_name
+  - Person or group name: recipient_name
   - Mailing address: recipient_address
     input type: area
     rows: 3
@@ -213,11 +218,17 @@ question: |
   Check the form before you print it
 subquestion: |
   Check the client's name and case number. Make sure this is the person or
-  organization the client wants DTA to share information with.
+  group the client wants DTA to share information with.
 
   ${ dta_consent }
 
   ${ action_button_html(url_action('dta_review'), label='Edit answers', color='primary') }
+
+  The form uses these words:
+
+  * **Consent** means permission.
+  * **Relevant confidential information** means private facts about your case.
+  * **Revoke** means cancel your permission.
 
   The signature and date are blank. The DTA client will fill them in by hand.
 continue button field: dta_preview
@@ -231,11 +242,11 @@ review:
     button: |
       **Permission:**
       % if permission_purpose == "information":
-      Talk with DTA and share information about benefit cases
+      Talk with DTA and share information about benefit cases.
       % elif permission_purpose == "representative":
-      Sign forms for me or use my benefits
+      Sign forms for me or use my benefits.
       % else:
-      I am not sure
+      I am not sure.
       % endif
   - Edit: client_name
     button: |
@@ -243,28 +254,28 @@ review:
       **Date of birth:** ${ format_date(client_birthdate) }
   - Edit: dta_identifier_kind
     button: |
-      **Case identification:**
+      **Case number:**
       % if dta_identifier_kind == "ssn":
-      Last four digits of Social Security number: ${ ssn_last_four }
+      Last four numbers of Social Security number: ${ ssn_last_four }
       % else:
       DTA Agency ID: ${ dta_agency_id }
       % endif
   - Edit: recipient_name
     button: |
-      **Person or organization:** ${ recipient_name }
+      **Person or group:** ${ recipient_name }
       **Address:** ${ recipient_address }
-      **Phone:** ${ recipient_phone or 'Not provided' }
+      **Phone:** ${ recipient_phone or 'None given' }
 ---
 id: dta download
 event: dta_download
 question: |
-  Print, sign, and send your DTA consent
+  Print, sign, and send your DTA form
 subquestion: |
   **This form has not been sent to DTA.**
 
   1. Download and print it. The DTA client must sign and date Section 5.
-  2. Send the signed form to DTA using one of the options below.
-  3. Keep a copy. You can also give a copy to the person or organization you named.
+  2. Send the signed form to DTA. Choose one of the ways below.
+  3. Keep a copy. You can also give a copy to the person or group you named.
 
   **Ways to send it:**
 
@@ -273,7 +284,7 @@ subquestion: |
   * Mail it to **DTA Document Processing Center, P.O. Box 4406, Taunton, MA 02780-0420**.
 
   To cancel this permission, call **1-877-382-2363** during business hours
-  and speak with a DTA representative. Or send DTA a written request by mail or fax.
+  and speak with a DTA worker. Or write a note asking DTA to cancel it. Send the note by mail or fax.
 
   ${ action_button_html(url_action('dta_review'), label='Edit answers', color='primary') }
 attachment code: dta_consent
