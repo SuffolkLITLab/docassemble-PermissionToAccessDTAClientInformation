@@ -122,7 +122,7 @@ scope.tapElementAndNavigate=async(state,{elem,post_nav_handlers=null})=>{
  await state.guard_against_missing_tap_element(state,{elem});
  const id=await state.get_page_id(state);
  const url=state.page.url();
- const navigation=state.page.waitForNavigation({waitUntil:'domcontentloaded',timeout:5000}).catch(error=>{
+ const navigation=state.page.waitForNavigation({waitUntil:'networkidle0',timeout:15000}).catch(error=>{
   if(error.name==='TimeoutError')return null;
   throw error;
  });
