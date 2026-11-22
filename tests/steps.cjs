@@ -109,7 +109,7 @@ for (const name of ['checkForErrors','get_page_id','examinePageID','waitForShowI
   for(let attempt=0;;attempt++){
    try{return await original(...args);}
    catch(error){
-    if(attempt>=20 || !/Execution context was destroyed|Cannot find context|detached Frame/.test(error.message))throw error;
+    if(attempt>=20 || !/Execution context was destroyed|Cannot find context|detached Frame|Node with given id does not belong/.test(error.message))throw error;
     await new Promise(resolve=>setTimeout(resolve,100));
    }
   }

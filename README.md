@@ -24,7 +24,7 @@ The output uses the language of the [official DTA VARI-OI form](https://www.mass
 
 The entrypoint includes a searchable title and description, use and signing limits, form title/number, jurisdiction, English language, estimated time, filing flags, authoritative sources, and matching `LIST_topics`/`tags`.
 
-The LIST codes are the deepest supported terms for this cross-program consent: SNAP (`BE-02-01-00-00`), TANF/TAFDC (`BE-02-02-00-00`), state-funded cash assistance/EAEDC (`BE-02-05-00-00`), and access to government records (`GO-02-00-00-00`). It is not an application, benefits appeal, FOIA request, or privacy lawsuit, so those narrower but unrelated categories are not used. Terms were checked against taxonomy.legal's live feed on November 22, 2026.
+The LIST codes are the deepest supported terms for this cross-program consent: SNAP (`BE-02-01-00-00`), TANF/TAFDC (`BE-02-02-00-00`), state-funded cash assistance/EAEDC (`BE-02-05-00-00`). It is not an application, benefits appeal, FOIA request, or privacy lawsuit, so those narrower but unrelated categories are not used. Terms were checked against taxonomy.legal's live feed on November 22, 2026.
 
 ## Validation
 
@@ -55,3 +55,5 @@ The browser suite downloads and examines generated PDFs; it requires `pdftotext`
 ## Credits
 
 Original student interview: Trevor Mears, Suffolk University Law School. The publication revision uses the Massachusetts Department of Transitional Assistance's current voluntary-consent form. The earlier student interview used a 2016 MLRI permission form.
+
+Independent review removed the broad government-records category to favor the three precise benefits topics. The live Image-10 destination covers SNAP, TAFDC, and EAEDC. MLRI’s [Appendix C sample consent](https://masslegalhelp.org/sites/default/files/2024-02/Appendix%20C_2024%20SNAP%20Guide.pdf) expressly covers SNAP or cash benefits and lasts 12 months unless the client states otherwise. An older DTA role-policy table describes broader cash-program authority under the same administrative role, referencing Image-10A. Maintainer/legal review should reconcile these distinct permissions before publication. The generated form retains the current official consent wording.

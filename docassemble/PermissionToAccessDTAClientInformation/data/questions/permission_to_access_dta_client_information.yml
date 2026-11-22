@@ -36,12 +36,10 @@ metadata:
     - BE-02-01-00-00
     - BE-02-02-00-00
     - BE-02-05-00-00
-    - GO-02-00-00-00
   tags:
     - BE-02-01-00-00
     - BE-02-02-00-00
     - BE-02-05-00-00
-    - GO-02-00-00-00
   original_form:
     - https://www.mass.gov/doc/voluntary-consent-to-release-information-vari-oi/download
     - https://www.mass.gov/doc/voluntary-consent-to-release-information-vari-oi-0/download
@@ -76,6 +74,7 @@ content: |
 features:
   navigation: true
   cache documents: false
+  tagged pdf: true
 ---
 sections:
   - dta_review: Review your answers
@@ -140,7 +139,7 @@ question: |
 subquestion: |
   This interview only gives permission to discuss and share DTA case information.
 
-  To let someone sign SNAP forms or use your benefits, use the
+  To let someone sign SNAP forms or use your SNAP, TAFDC, or EAEDC benefits, use the
   [DTA authorized representative interview](https://apps.suffolklitlab.org/interview?i=docassemble.AuthorizeFoodBenefitsRepresentative%3Adata%2Fquestions%2Fauthorize_food_benefits_representative.yml).
 
   If you are not sure which form you need, call DTA at **1-877-382-2363**.
@@ -230,7 +229,14 @@ question: |
 review:
   - Edit: permission_purpose
     button: |
-      **Permission:** Talk with DTA and share information about benefit cases
+      **Permission:**
+      % if permission_purpose == "information":
+      Talk with DTA and share information about benefit cases
+      % elif permission_purpose == "representative":
+      Sign forms for me or use my benefits
+      % else:
+      I am not sure
+      % endif
   - Edit: client_name
     button: |
       **DTA client:** ${ client_name }

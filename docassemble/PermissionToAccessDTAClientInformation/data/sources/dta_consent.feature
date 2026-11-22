@@ -23,6 +23,15 @@ Feature: Give a trusted person or organization permission to discuss DTA cases
     And the downloaded PDF "dta_information_release.pdf" should contain "Suite 4, Boston, MA 02110"
     And the downloaded PDF "dta_information_release.pdf" should contain "Client/Applicant Signature:"
     And the downloaded PDF "dta_information_release.pdf" should not contain "None"
+    When I follow the review link containing "Edit answers"
+    And I follow the review link containing "Permission:"
+    And I get to "dta review" with this data:
+      | var | value | trigger |
+      | permission_purpose | representative | |
+    Then I should see the phrase "Sign forms for me or use my benefits"
+    When I continue
+    Then the question id should be "dta other help"
+    And I should see the phrase "TAFDC, or EAEDC"
 
   @ssn_edit
   Scenario: Lee uses a four-digit SSN and then switches to an Agency ID
